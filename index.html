@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Markdown Previewer</title>
+</head>
+<body class="bg-black">
+    <div id="root"></div>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://kit.fontawesome.com/778fdc401a.js" crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/react@17/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js"></script>
+    <!-- Babel Script -->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+    <script type="text/babel">
+        
+      const app = document.getElementById('root');
+
+      function App() {
+        return (
+            <MarkBox/>
+        )
+      }
+
+      function MarkBox() {
+        return (
+            <React.Fragment>
+                <div className='h-[100vh] flex flex-col gap-10 items-center'>
+                    <textarea className="mt-20" placeholder='write your text here...'></textarea>
+                    <div className='mt-20 text-lg text-white'>aweawieh</div>
+                </div>
+            </React.Fragment>
+
+        )
+      }
+
+      ReactDOM.render(<App/>, app);
+    </script>
+</body>
+</html>
