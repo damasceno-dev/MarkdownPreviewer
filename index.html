@@ -27,11 +27,21 @@
       }
 
       function MarkBox() {
+
+        const [text, setText] = React.useState('')
+
+        function handleText(e) {
+          setText(e.target.value)
+        }
+
         return (
             <React.Fragment>
                 <div className='h-[100vh] flex flex-col gap-10 items-center'>
-                    <textarea className="mt-20" placeholder='write your text here...'></textarea>
-                    <div className='mt-20 text-lg text-white'>aweawieh</div>
+                    <textarea className="mt-20" placeholder='write your text here...'
+                      value={text}
+                      onChange={handleText}
+                    ></textarea>
+                    <div className='mt-20 text-lg text-white'>{text}</div>
                 </div>
             </React.Fragment>
 
