@@ -31,20 +31,36 @@
         const [text, setText] = React.useState('')
 
         function handleText(e) {
-          setText(e.target.value)
+          console.log(e.target.value)
+          const areaText = e.target.value;
+          // const finalText = "<div className='text-5xl'>" + areaText + "</div>";
+          setText(areaText)
         }
 
         return (
             <React.Fragment>
-                <div className='h-[100vh] flex flex-col gap-10 items-center'>
-                    <textarea className="mt-20" placeholder='write your text here...'
+                <div className=' flex flex-col gap-10 items-center'>
+                    <textarea className="mt-20 resize h-60 w-[30rem]" placeholder='Write your text here...'
                       value={text}
                       onChange={handleText}
                     ></textarea>
-                    <div className='mt-20 text-lg text-white'>{text}</div>
+                    <div className='mt-20 text-lg text-white'>
+                      <MarkDownParser enteredText={text}/>
+                    </div>
                 </div>
             </React.Fragment>
 
+        )
+      }
+
+      function MarkDownParser({enteredText}) {
+        let etArray = enteredText.split(/\r?\n/);
+        console.log(etArray)
+        return (
+          etArray.map(x => (
+
+            <div className='text-5xl h-16 text-center'>{x}</div>
+          ))
         )
       }
 
