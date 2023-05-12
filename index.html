@@ -28,7 +28,7 @@
 
       function MarkBox() {
 
-        const [text, setText] = React.useState('')
+        const [text, setText] = React.useState('## kkkkkkk  \n# kkkkk \naí \n### and here are som cool stuff! \nsim peçanhaaoeijawoiejaoiwejawioej')
 
         function handleText(e) {
           console.log(e.target.value)
@@ -40,11 +40,11 @@
         return (
             <React.Fragment>
                 <div className=' flex flex-col gap-10 items-center'>
-                    <textarea className="mt-20 resize h-60 w-[30rem]" placeholder='Write your text here...'
+                    <textarea id='editor' className="mt-20 resize h-60 w-[30rem]" placeholder='Write your text here...'
                       value={text}
                       onChange={handleText}
                     ></textarea>
-                    <div className='mt-20 text-lg text-white'>
+                    <div id='preview' className='mt-20 text-lg text-white w-4/5'>
                       <MarkDownParser enteredText={text}/>
                     </div>
                 </div>
@@ -55,12 +55,34 @@
 
       function MarkDownParser({enteredText}) {
         let etArray = enteredText.split(/\r?\n/);
-        console.log(etArray)
-        return (
-          etArray.map(x => (
 
-            <div className='text-5xl h-16 text-center'>{x}</div>
-          ))
+        let h1_Title = /^# /;
+        let h2_Title = /^## /;
+        let h3_Title = /^### /;
+        let lineReturn;
+        return (
+          etArray.map(line => {
+
+            if (h1_Title.test(line)) {
+              lineReturn = line.replace(h1_Title, '')
+              return (
+                <div className='text-6xl w-full h-16 font-bold border-b-2 border-indigo-500 mb-10 leading-[3.2rem]'>{lineReturn}</div>
+              )
+            } else if (h2_Title.test(line)) {
+              lineReturn = line.replace(h2_Title, '')
+              return (
+                <div className='text-4xl w-full h-16 font-bold border-b-[1px] border-indigo-500 leading-[5rem]	mb-8'>{lineReturn}</div>
+              )
+            } else if (h3_Title.test(line)) {
+              lineReturn = line.replace(h3_Title, '')
+              return (
+                <div className='text-3xl w-full h-16 font-bold leading-[5rem]	mb-8'>{lineReturn}</div>
+              )
+            } else { 
+              return <div className='text-2xl h-16 text-center mb-2'>{line}</div>
+            }
+
+          })
         )
       }
 
