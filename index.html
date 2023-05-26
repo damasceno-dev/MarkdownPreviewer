@@ -28,19 +28,20 @@
 
       function MarkBox() {
 
-        const [text, setText] = React.useState('## kkkkkkk  \n# kkkkk \naí \n### and here are som cool stuff! \nsim peçanhaaoeijawoiejaoiwejawioej')
+        const [text, setText] = React.useState('# heading element (H1 size)  \n## sub heading element (H2 size) \n### heading h3 \naí \nsim peçanhaaoeijawoiejaoiwejawioej \nThis is inline code: `<div></div>`. See? Again on the same line: `function import`\nOlhe`<div></div>` \n`codiguim`aqui')
+
+
+        // \nOlhe`<div></div>` \n`codiguim`aqui
 
         function handleText(e) {
-          console.log(e.target.value)
           const areaText = e.target.value;
-          // const finalText = "<div className='text-5xl'>" + areaText + "</div>";
           setText(areaText)
         }
 
         return (
             <React.Fragment>
-                <div className=' flex flex-col gap-10 items-center'>
-                    <textarea id='editor' className="mt-20 resize h-60 w-[30rem]" placeholder='Write your text here...'
+                <div className=' flex flex-col gap-10 items-center mb-64'>
+                    <textarea id='editor' className="p-2- mt-20 resize h-60 w-[45rem]" placeholder='Write your text here...'
                       value={text}
                       onChange={handleText}
                     ></textarea>
@@ -59,27 +60,80 @@
         let h1_Title = /^# /;
         let h2_Title = /^## /;
         let h3_Title = /^### /;
+
+        let inLineCode = /`(.*?)`/g;
+
         let lineReturn;
         return (
-          etArray.map(line => {
-
+          etArray.map((line, index) => {
             if (h1_Title.test(line)) {
               lineReturn = line.replace(h1_Title, '')
               return (
-                <div className='text-6xl w-full h-16 font-bold border-b-2 border-indigo-500 mb-10 leading-[3.2rem]'>{lineReturn}</div>
+                <div key={index} className='text-6xl w-full h-16 font-bold border-b-2 border-indigo-500 mb-10 leading-[3.2rem]'>{lineReturn}</div>
               )
             } else if (h2_Title.test(line)) {
               lineReturn = line.replace(h2_Title, '')
               return (
-                <div className='text-4xl w-full h-16 font-bold border-b-[1px] border-indigo-500 leading-[5rem]	mb-8'>{lineReturn}</div>
+                <div key={index} className='text-4xl w-full h-16 font-bold border-b-[1px] border-indigo-500 leading-[5rem]	mb-8'>{lineReturn}</div>
               )
             } else if (h3_Title.test(line)) {
               lineReturn = line.replace(h3_Title, '')
               return (
-                <div className='text-3xl w-full h-16 font-bold leading-[5rem]	mb-8'>{lineReturn}</div>
+                <div key={index} className='text-3xl w-full h-16 font-bold leading-[5rem]	mb-8'>{lineReturn}</div>
               )
-            } else { 
-              return <div className='text-2xl h-16 text-center mb-2'>{line}</div>
+            } else if (inLineCode.test(line)) {
+              let lineCodeInside = line.match(inLineCode)
+              let arrayWithCodes = lineCodeInside.map(x => x.replaceAll('`', '')) //array without '`' grave accent.
+
+
+              let lineArray = line.split('`'); //this is going to isolate the code. Comparing each element with arrayWithCodes will give me which one is code
+
+              return (
+                <div>
+                  {lineArray.map(element => {
+                    if (arrayWithCodes.includes(element)) {
+                      return (
+                        <div className='font-mono text-2xl bg-white inline w-full h-6 font-bold text-black p-[1.5px] mb-8'>{element}</div>
+                      )
+                    } else {
+                      return (
+                        <div className='inline text-2xl h-6 mb-2'>{element}</div>
+                      )
+                    }
+                  })}
+                </div>
+              )
+              // for (let i = 0; i < lineArray.length; i++) {
+              //   const element = lineArray[i];
+              //   console.log(element)
+
+              //   if (lineCodeInside.includes(element)) {
+              //       <div className='font-mono text-2xl bg-white inline w-full h-6 font-bold text-black p-[1.5px] mb-8'>{element}</div>
+              //   } else {
+              //       <div className='inline text-2xl h-6 mb-2'>{element}</div>
+              //   }
+                
+              // }
+
+              // lineReturn = lineCodeInside[1];
+              
+              // let lineBefore = line.split('').slice(0,lineCodeInside['index']).join('');
+              // let lineAfter = line.split('').slice(lineCodeInside['index'] + lineCodeInside[0].length, line.length).join('');
+              
+              
+              // return (
+              //   <React.Fragment key={index}>
+              //     <div>
+              //       <div className='inline text-2xl h-6 mb-2'>{lineBefore}</div>
+              //       <div className='font-mono text-2xl bg-white inline w-full h-6 font-bold text-black p-[1.5px] mb-8'>{lineReturn}</div>
+              //       <div className='inline text-2xl h-6 mb-2'>{lineAfter}</div>
+              //     </div>
+              //   </React.Fragment>
+              // )
+              }
+            
+            else { 
+              return <div key={index} className='text-2xl h-6 mb-2'>{line}</div>
             }
 
           })
