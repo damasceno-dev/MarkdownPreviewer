@@ -28,7 +28,7 @@
 
       function MarkBox() {
 
-        const [text, setText] = React.useState('# heading element (H1 size)  \n## sub heading element (H2 size) \n### heading h3 \naí \nsim peçanhaaoeijawoiejaoiwejawioej \nThis is inline code: `<div></div>`. See? Again on the same line: `function import`\nLook:`<div></div>` \n`somecode`here (no space) \n\nThis is an example of multiline code:\n``` \n for (let i = 0; i < array.length; i++)     { \n   console.log(i) \n }\n```\nEnd of multline code')
+        const [text, setText] = React.useState('# heading element (H1 size)  \n## sub heading element (H2 size) \n### heading h3 \na line \nfull line example lorem lorem \nThis is inline code: `<div></div>`. See? Again on the same line: `function import`\nLook:`<div></div>` \n`somecode`here (no space) \n\nThis is an example of multiline code:\n``` \n for (let i = 0; i < array.length; i++)     { \n   console.log(i)\n   testing               space \n }\n```\nEnd of multline code')
 
         function handleText(e) {
           const areaText = e.target.value;
@@ -42,7 +42,7 @@
                       value={text}
                       onChange={handleText}
                     ></textarea>
-                    <div id='preview' className='mt-20 text-lg text-white w-4/5'>
+                    <div id='preview' className='mt-20 text-lg text-white w-4/5 whitespace-pre'>
                       <MarkDownParser enteredText={text}/>
                     </div>
                 </div>
@@ -53,7 +53,7 @@
 
       function MarkDownParser({enteredText}) {
         let etArray = enteredText.split(/\r?\n/);
-
+        console.log(etArray)
         let h1_Title = /^# /;
         let h2_Title = /^## /;
         let h3_Title = /^### /;
@@ -70,15 +70,17 @@
             if (multLineCode.test(line)) {
               multLineCodeActive = !multLineCodeActive
               lineReturn = line.replace(multLineCode, '')
-              console.log(line)
               return (
                 <React.Fragment key={index}>{lineReturn}</React.Fragment>
               )
             }
 
             while (multLineCodeActive) {
+              
+              console.log(line)
               return (
-                <div key={index} className='font-mono text-2xl bg-white w-full h-8 font-bold text-black'>{line}</div>
+                // <div key={index} className='font-mono text-2xl bg-white w-full h-8 font-bold text-black my-[-2px]'>{line}</div>
+                <div className='block'>{line}</div>
               )
             }
             
@@ -106,7 +108,7 @@
               let lineArray = line.split('`'); //this is going to isolate the code. Comparing each element with arrayWithCodes will give me which one is code
 
               return (
-                <div>
+                <div key={index}>
                   {lineArray.map((element,index) => {
                     if (arrayWithCodes.includes(element)) {
                       return (
