@@ -28,10 +28,7 @@
 
       function MarkBox() {
 
-        const [text, setText] = React.useState('# heading element (H1 size)  \n## sub heading element (H2 size) \n### heading h3 \naí \nsim peçanhaaoeijawoiejaoiwejawioej \nThis is inline code: `<div></div>`. See? Again on the same line: `function import`\nOlhe`<div></div>` \n`codiguim`aqui')
-
-
-        // \nOlhe`<div></div>` \n`codiguim`aqui
+        const [text, setText] = React.useState('# heading element (H1 size)  \n## sub heading element (H2 size) \n### heading h3 \naí \nsim peçanhaaoeijawoiejaoiwejawioej \nThis is inline code: `<div></div>`. See? Again on the same line: `function import`\nLook:`<div></div>` \n`somecode`here (no space) \n\nThis is an example of multiline code:\n``` \n for (let i = 0; i < array.length; i++)     { \n   console.log(i) \n }\n```\nEnd of multline code')
 
         function handleText(e) {
           const areaText = e.target.value;
@@ -63,9 +60,29 @@
 
         let inLineCode = /`(.*?)`/g;
 
+        let multLineCode = /^```/;
+        let multLineCodeActive = false;
+
         let lineReturn;
         return (
           etArray.map((line, index) => {
+
+            if (multLineCode.test(line)) {
+              multLineCodeActive = !multLineCodeActive
+              lineReturn = line.replace(multLineCode, '')
+              console.log(line)
+              return (
+                <React.Fragment key={index}>{lineReturn}</React.Fragment>
+              )
+            }
+
+            while (multLineCodeActive) {
+              return (
+                <div key={index} className='font-mono text-2xl bg-white w-full h-8 font-bold text-black'>{line}</div>
+              )
+            }
+            
+
             if (h1_Title.test(line)) {
               lineReturn = line.replace(h1_Title, '')
               return (
@@ -90,46 +107,19 @@
 
               return (
                 <div>
-                  {lineArray.map(element => {
+                  {lineArray.map((element,index) => {
                     if (arrayWithCodes.includes(element)) {
                       return (
-                        <div className='font-mono text-2xl bg-white inline w-full h-6 font-bold text-black p-[1.5px] mb-8'>{element}</div>
+                        <div key={index} className='font-mono text-2xl bg-white inline w-full h-6 font-bold text-black p-[1.5px] mb-8'>{element}</div>
                       )
                     } else {
                       return (
-                        <div className='inline text-2xl h-6 mb-2'>{element}</div>
+                        <div key={index} className='inline text-2xl h-6 mb-2'>{element}</div>
                       )
                     }
                   })}
                 </div>
               )
-              // for (let i = 0; i < lineArray.length; i++) {
-              //   const element = lineArray[i];
-              //   console.log(element)
-
-              //   if (lineCodeInside.includes(element)) {
-              //       <div className='font-mono text-2xl bg-white inline w-full h-6 font-bold text-black p-[1.5px] mb-8'>{element}</div>
-              //   } else {
-              //       <div className='inline text-2xl h-6 mb-2'>{element}</div>
-              //   }
-                
-              // }
-
-              // lineReturn = lineCodeInside[1];
-              
-              // let lineBefore = line.split('').slice(0,lineCodeInside['index']).join('');
-              // let lineAfter = line.split('').slice(lineCodeInside['index'] + lineCodeInside[0].length, line.length).join('');
-              
-              
-              // return (
-              //   <React.Fragment key={index}>
-              //     <div>
-              //       <div className='inline text-2xl h-6 mb-2'>{lineBefore}</div>
-              //       <div className='font-mono text-2xl bg-white inline w-full h-6 font-bold text-black p-[1.5px] mb-8'>{lineReturn}</div>
-              //       <div className='inline text-2xl h-6 mb-2'>{lineAfter}</div>
-              //     </div>
-              //   </React.Fragment>
-              // )
               }
             
             else { 
