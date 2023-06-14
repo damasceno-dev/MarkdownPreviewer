@@ -43,9 +43,6 @@
                       onChange={handleText}
                     ></textarea>
                     <div id='preview' className='mt-20 text-lg text-white w-4/5 whitespace-pre'>
-                      - tem que ter só um line.map nos 3 if's. Aí, se o array incluir o elemento, eu vou adicionando aquele css específico à classname <br/>
-                    acho que vou ter que mudar os inlines (inline code, bold e italic) pra permitir que uma linha tenha mais de um match <br/>
-                    vou ter que só colocar os classnames numa variável... e retornar tudo de uma vez <br/>
                     ver tb o erro da unique key
                       <MarkDownParser enteredText={text}/>
                     </div>
@@ -140,7 +137,7 @@
               console.log('line array:', lineArray)
               return (
                 <div key={index}>
-                  {lineArray.map((element, index) => {
+                  {lineArray.map((element, indexInside) => {
                     if (arrayWithCodes.includes(element)) {
                       classToAdd += ' font-mono mb-8 w-full font-bold text-black p-[1.5px] bg-white '
                     }
@@ -154,7 +151,7 @@
                       classToAdd = 'inline text-2xl h-6';
                     }
                     return (
-                      <div key={index} className={classToAdd}>{element}</div>
+                      <div key={indexInside} className={classToAdd}>{element}</div>
                     )
                   })}
                 </div>
