@@ -28,7 +28,7 @@
 
       function MarkBox() {
 
-        const [text, setText] = React.useState('# heading element (H1 size)  \n## sub heading element (H2 size) \n### heading h3 \na line \nfull line example Lorem ipsum dolor sit amet consectetur adipisicing elit. Recusandae minus eos pariatur reiciendis placeat, esse ipsum est facere.\nThis is some **bold text** \n And this is __italic text__  \n And you can make __**bold and italic**__ \nThis is inline code: `<div></div>`. See? Again on the same line: `function import`\nLook:`<div></div>` \n`somecode`here (no space) \n\nThis is an example of **multiline code**:\n```\n for (let i = 0; i < array.length; i++)     { \n   console.log(i)\n   testing               space \n }\n```\nEnd of multline code \n\n\n - And of course\n  -There are lists\n    - With 2 levels of indentation \n  -just count the number\n- of white spaces \n    - before the hyphen character\n-                 Whitespaces after the hyphen character **doesn\'t** matter')
+        const [text, setText] = React.useState('# heading element (H1 size)  \n## sub heading element (H2 size) \n### heading h3 \na line \nfull line example Lorem ipsum dolor sit amet consectetur adipisicing elit. Recusandae minus eos pariatur reiciendis placeat, esse ipsum est facere.\n\nThis is some **bold** text \n And this is __italic__ text  \n And you can make __**bold and italic**__ text\nThis is inline code: `<div></div>`. See? Again on the same line: `function import`\nLook:`<div></div>` \n`somecode`here (no space) \n\nThis is an example of **multiline code**:\n```\n for (let i = 0; i < array.length; i++)     { \n   console.log(i)\n   testing               space \n }\n```\nEnd of multline code \n\n - And of course\n  -There are lists\n    - With 2 levels of indentation \n  -just count the number\n- of white spaces \n    - before the hyphen character\n-                 Whitespaces after the hyphen character doesn\'t matter\n\nThere\'s also links for [this](https://johntravolta1.github.io/portfolio-web-page/) awsome portfolio webpage in example')
 
         function handleText(e) {
           const areaText = e.target.value;
@@ -43,7 +43,6 @@
                       onChange={handleText}
                     ></textarea>
                     <div id='preview' className='mt-20 text-lg text-white w-4/5 whitespace-pre'>
-                    ver tb o erro da unique key
                       <MarkDownParser enteredText={text}/>
                     </div>
                 </div>
@@ -53,26 +52,32 @@
       }
 
       function MarkDownParser({enteredText}) {
-        let etArray = enteredText.split(/\r?\n/);
-        let h1_Title = /^# /;
-        let h2_Title = /^## /;
-        let h3_Title = /^### /;
+        const etArray = enteredText.split(/\r?\n/);
+        const h1_Title = /^# /;
+        const h2_Title = /^## /;
+        const h3_Title = /^### /;
 
-        let inLineCode = /`(.*?)`/g;
-        let boldedText = /\*\*(.*?)\*\*/g;
-        let italicText = /__(.*?)__/g;
+        const inLineCode = /`(.*?)`/g;
+        const boldedText = /\*\*(.*?)\*\*/g;
+        const italicText = /__(.*?)__/g;
 
-        let multLineCode = /^```/;
+        const multLineCode = /^```/;
         let multLineCodeActive = false;
 
-        let list_1 = /^\s?-/;
-        let list_2 = /^\s{2,3}-/;
-        let list_3 = /^\s{4,}-/;
+        const list_1 = /^\s?-/;
+        const list_2 = /^\s{2,3}-/;
+        const list_3 = /^\s{4,}-/;
+
+        const webPageLink = /\[(.*?)\]\((.*?)\)/g;
+        // const textForLink = /\[(.*?)\]/g;
+        // const webLink = /\((.*?)\)/g;
 
         let lineReturn;
+        let RegexOfThisGroup;
         return (
           etArray.map((line, index) => {
 
+            // #region Multilinecode
             if (multLineCode.test(line)) {
               multLineCodeActive = !multLineCodeActive
               lineReturn = line.replace(multLineCode, '')
@@ -86,27 +91,32 @@
                 <div key={index} className='font-mono text-2xl bg-white w-full h-8 font-bold text-black my-[-2px]'>{line}</div>
               )
             }
-            
+            // #endregion Multilinecode
 
+            // #region Title
             if (h1_Title.test(line)) {
               lineReturn = line.replace(h1_Title, '')
               return (
                 <div key={index} className='text-6xl w-full h-16 font-bold border-b-2 border-indigo-500 mb-10 leading-[3.2rem]'>{lineReturn}</div>
               )
-            } else if (h2_Title.test(line)) {
+            } 
+            else if (h2_Title.test(line)) {
               lineReturn = line.replace(h2_Title, '')
               return (
                 <div key={index} className='text-4xl w-full h-16 font-bold border-b-[1px] border-indigo-500 leading-[5rem]	mb-8'>{lineReturn}</div>
               )
-            } else if (h3_Title.test(line)) {
+            } 
+            else if (h3_Title.test(line)) {
               lineReturn = line.replace(h3_Title, '')
               return (
                 <div key={index} className='text-3xl w-full h-16 font-bold leading-[5rem]	mb-8'>{lineReturn}</div>
               )
             } 
-            //teste
-            else if (inLineCode.test(line) || boldedText.test(line) || italicText.test(line)) {
-              const RegexOfThisGroup =  /`|\*\*|__/g //regex for in line code, or bold, or italic. It's used to remove those special characters from the returned string.              
+            // #endregion Title
+
+            // #region inLine, bolded and italic
+            if (inLineCode.test(line) || boldedText.test(line) || italicText.test(line)) {
+              RegexOfThisGroup =  /`|\*\*|__/g //regex for in line code, or bold, or italic. It's used to remove those special characters from the returned string.              
               // OBS: THIS EXPRESSION DOES NOT REMOVE THE SPLIT CHARACTERS => (/`|\*\*|__/g) BECAUSE OF THE PARENTHESIS
 
               inLineCode.lastIndex =0; boldedText.lastIndex =0; italicText.lastIndex = 0;
@@ -118,23 +128,18 @@
               }
 
               if (boldedText.test(line)) {
-                console.log('BOLDED: ', line)
                 let boldedTextInside = line.match(boldedText)
-                console.log('text inside bolded:', boldedTextInside)
                 arrayWithBolded = boldedTextInside.map(x => x.replaceAll(RegexOfThisGroup, '')) //array without '**' bolded mark.
-                console.log('array with bolded: ', arrayWithBolded)
               }
 
               if (italicText.test(line)) {
                 let italicTextInside = line.match(italicText)
                 arrayWithItalic = italicTextInside.map(x => x.replaceAll(RegexOfThisGroup, '')) //array without '__' italic mark.
-                console.log('array with italic: ', arrayWithItalic)
               }
 
-              let classToAdd = 'inline text-2xl h-6'
+              let classToAdd = 'inline text-2xl h-6';
               let lineArray = line.split(RegexOfThisGroup); //this is going to isolate the code. Comparing each element with arrayWithCodes, arrayWithBolded or arrayWithItalic will give me which one is code
 
-              console.log('line array:', lineArray)
               return (
                 <div key={index}>
                   {lineArray.map((element, indexInside) => {
@@ -157,113 +162,46 @@
                 </div>
               )
             }
+            // #endregion inLine, bolded and italic
+
+            // #region Lists
+            else if (list_1.test(line)) {
+              lineReturn = line.replace(list_1, '')
+              return (
+                <ul key={index} className='list-disc text-2xl h-6 mb-2'>
+                      <li>{lineReturn}</li>
+                </ul>
+              )
+            }
+            else if (list_2.test(line)) {
+              lineReturn = line.replace(list_2,'')
+              return (
+                <ul key={index}  style={{listStyleType: 'circle'}} className='ml-10 text-2xl h-6 mb-2'>
+                        <li>{lineReturn}</li> 
+                </ul>
+              )
+            }
+            else if (list_3.test(line)) {
+              lineReturn = line.replace(list_3,'')
+              return (
+                <ul key={index}  style={{listStyleType: 'square'}} className='ml-20 text-2xl h-6 mb-2'>
+                        <li>{lineReturn}</li> 
+                </ul>
+              )
+            }
+            // #endregion Lists
             
-            
-            
-            
-            // else if (inLineCode.test(line)) {
-            //   let lineCodeInside = line.match(inLineCode)
-            //   let arrayWithCodes = lineCodeInside.map(x => x.replaceAll('`', '')) //array without '`' grave accent.
+            // #region weblinks
+            if(webPageLink.test(line)) {
+              RegexOfThisGroup = /\[|\]|\(|\)/g //regex for links characters. It's used to remove those special characters from the returned string.
+              console.log(line)
+              let link = line.match(webPageLink);
+              console.log(link)
+              let arrayWithTexts = link.map(x=> x.replaceAll(RegexOfThisGroup, ''));
+              console.log(arrayWithTexts)
+            }
+            // #endregion weblinks
 
-
-            //   let lineArray = line.split('`'); //this is going to isolate the code. Comparing each element with arrayWithCodes will give me which one is code
-
-            //   return (
-            //     <div key={index}>
-            //       {lineArray.map((element,index) => {
-            //         if (arrayWithCodes.includes(element)) {
-            //           return (
-            //             <div key={index} className='font-mono mb-8 w-full font-bold text-black p-[1.5px] bg-white inline text-2xl h-6'>{element}</div>
-            //           )
-            //         } else {
-            //           return (
-            //             <div key={index} className='inline text-2xl h-6 mb-2'>{element}</div>
-            //           )
-            //         }
-            //       })}
-            //     </div>
-            //   )
-            //   }
-
-            //   else if (boldedText.test(line)) {
-            //     let boldedTextInside = line.match(boldedText)
-            //     let arrayWithBolded = boldedTextInside.map(x => x.replaceAll('**', '')) //array without '**' bolded mark.
-
-
-            //     let lineArray = line.split('**'); //this is going to isolate the bold. Comparing each element with arrayWithBolded will give me which one is bold
-
-            //     return (
-            //       <div key={index}>
-            //         {lineArray.map((element,index) => {
-            //           if (arrayWithBolded.includes(element)) {
-            //             return (
-            //               <div key={index} className='font-extrabold inline text-2xl h-6 mb-2'>{element}</div>
-            //             )
-            //           } else {
-            //             return (
-            //               <div key={index} className='inline text-2xl h-6 mb-2'>{element}</div>
-            //             )
-            //           }
-            //         })}
-            //       </div>
-            //     )
-            //   }
-
-            //   else if (italicText.test(line)) {
-            //     let italicTextInside = line.match(italicText)
-            //     let arrayWithItalic = italicTextInside.map(x => x.replaceAll('__', '')) //array without '__' italic mark.
-
-
-            //     let lineArray = line.split('__'); //this is going to isolate the italic. Comparing each element with arrayWithItalic will give me which one is italic
-
-            //     return (
-            //       <div key={index}>
-            //         {lineArray.map((element,index) => {
-            //           if (arrayWithItalic.includes(element)) {
-            //             return (
-            //               <div key={index} className='italic inline text-2xl h-6 mb-2'>{element}</div>
-            //             )
-            //           } else {
-            //             return (
-            //               <div key={index} className='inline text-2xl h-6 mb-2'>{element}</div>
-            //             )
-            //           }
-            //         })}
-            //       </div>
-            //     )
-            //   }
-
-
-
-
-
-
-
-              else if (list_1.test(line)) {
-                lineReturn = line.replace(list_1, '')
-                return (
-                  <ul className='list-disc text-2xl h-6 mb-2'>
-                        <li>{lineReturn}</li>
-                  </ul>
-                )
-              }
-              else if (list_2.test(line)) {
-                lineReturn = line.replace(list_2,'')
-                return (
-                  <ul style={{listStyleType: 'circle'}} className='ml-10 text-2xl h-6 mb-2'>
-                          <li>{lineReturn}</li> 
-                  </ul>
-                )
-              }
-              else if (list_3.test(line)) {
-                lineReturn = line.replace(list_3,'')
-                return (
-                  <ul style={{listStyleType: 'square'}} className='ml-20 text-2xl h-6 mb-2'>
-                          <li>{lineReturn}</li> 
-                  </ul>
-                )
-              }
-            
             else { 
               return <div key={index} className='text-2xl h-6 mb-2'>{line}</div>
             }
