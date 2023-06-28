@@ -10,6 +10,3 @@ When my markdown previewer first loads, the default text in the #editor field sh
 4 or more => level 3: |    -aweawe    or |           -aweae   
 Whitespaces after the hyphen character doesn't matter
 You can choose any level of indentation at anytime
-
-# to-do:
-style better the button component
