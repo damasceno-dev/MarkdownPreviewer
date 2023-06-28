@@ -12,4 +12,4 @@ Whitespaces after the hyphen character doesn't matter
 You can choose any level of indentation at anytime
 
 # to-do:
-logic for expand and collapse
+style better the button component

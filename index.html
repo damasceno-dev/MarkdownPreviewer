@@ -53,6 +53,8 @@
         const [height, setHeight] = React.useState(0);
         const [expanded, setExpanded] = React.useState(false)
 
+        const [textAreaStyle, setTextAreaStyle] = React.useState("p-2 resize h-72 w-[60rem] min-w-max rounded-b-lg ")
+
         React.useEffect(() => {
           setHeight(bodyRef.current.offsetHeight);
         }, [text]);
@@ -87,12 +89,22 @@
             inline: 'center'
           });
         }
+        
+        function handleExpand() {
+          setExpanded(!expanded)
+          if (!expanded) {
+            setTextAreaStyle("p-2 resize h-[600px] w-[70rem] min-w-max rounded-b-lg ")
+          } else {
+            setTextAreaStyle("p-2 resize h-72 w-[60rem] min-w-max rounded-b-lg ")
+          }
+        }
+
         return (
             <React.Fragment>
                 <div ref={bodyRef} className='flex flex-col gap-10 items-center mb-64'>
                     <div id='editor-wrapper' 
-                        ref={scrollUpRef} className='flex flex-col justify-center mt-[100px] shadow-[10px_10px_15px_-3px_rgba(255,255,255)]'>
-                      <div id='editor-header' className='flex items-center justify-between gap-4 h-12 w-full bg-indigo-600 p-6 border-[1px] rounded-t-lg'>
+                        ref={scrollUpRef} className='flex flex-col justify-center mt-[100px] shadow-[9px_6px_15px_-3px_rgba(255,255,255)]'>
+                      <div id='editor-header' className='flex items-center justify-between gap-4 h-12 w-full bg-indigo-600 p-[20px] border-[1px] rounded-t-lg'>
                         <div id="editor-header-left" className='flex gap-4'>
                           <button title="Set initial text" onClick={handleInitialText}>
                             <i className="fa-solid fa-code text-white hover:text-indigo-300"></i>
@@ -102,40 +114,34 @@
                         <div id="editor-header-right">
                         {expanded ? 
                           
-                          <button title='Collapse'>
+                          <button title='Collapse' onClick={handleExpand}>
                             <i class="fa-solid fa-square-minus text-white hover:text-indigo-300 fa-lg"></i>
                           </button>
                           
                           :
 
-                          <button title='Expand'>
+                          <button title='Expand' onClick={handleExpand}>
                             <i className="fa-solid fa-maximize text-white hover:text-indigo-300 fa-lg"></i>
                           </button>
                           }
 
                         </div>
                       </div>
-                      <textarea id='editor' className="p-2 resize h-72 w-[60rem] rounded-b-lg" placeholder='Write your text here...'
+                      <textarea id='editor' className={textAreaStyle} placeholder='Write your text here...'
                         value={text}
                         onChange={handleText}
                       ></textarea>
                     </div>
                     <div id='buttons-wrapper' className='flex gap-12'>
-                      <button onClick={handleClearText} className='text-white bg-gray-500 p-2 border'>
-                        Clear text
-                      </button>
-                      {height > 1000 && <button onClick={handleScrollDown} className='text-white bg-gray-500 p-2 border'>
-                        Scroll to the end
-                      </button>}
-                      <button onClick={handleInitialText} className='text-white bg-gray-500 p-2 border'>
-                        Set initial text
-                      </button>
+                      <Button onClick={handleClearText} text='Clear text' />                        
+                      {height > 1000 && <Button onClick={handleScrollDown} text='Scroll to the end' />}
+                      <Button onClick={handleInitialText} text={'Set initial text'} />
                     </div>
                     <div id='preview' className='mt-20 text-lg text-white w-4/5 whitespace-pre'>
                       <MarkDownParser enteredText={text} />
                     </div>
-                    <footer ref={scrollDownRef} className='mt-[-15px]'>
-                      {height > 1000 && <button onClick={handleScrollUp} className='text-white bg-gray-500 p-2 border'>Scroll to the beginning</button> }
+                    <footer ref={scrollDownRef} className='mt-[-15px] p-8'>
+                      {height > 1000 && <Button onClick={handleScrollUp} text='Scroll to the beginning' />}
                     </footer>
                 </div>
             </React.Fragment>
@@ -143,8 +149,6 @@
       }
 
       function MarkDownParser({enteredText}) {
-
-
         const etArray = enteredText.split(/\r?\n/);
         console.log(etArray)
         const h1_Title = /^# /;
@@ -392,6 +396,13 @@
         )
       }
 
+      function Button({text, onClick}) {
+        return (
+          <button onClick={onClick} className='text-white bg-gray-500 p-2 border'>
+                        {text}
+          </button>
+        )
+      }
       ReactDOM.render(<App/>, app);
     </script>
 </body>
