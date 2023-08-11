@@ -1,7 +1,9 @@
 
 
-# User story #5: 
-When my markdown previewer first loads, the default text in the #editor field should contain valid markdown that represents at least one of each of the following elements: a heading element (H1 size), a sub heading element (H2 size), a link, inline code, a code block, a list item, a blockquote, an image, and bolded text.
+# Markdown Preview: 
+This markdown preview was made from scratch in order to complete the course from fcc called Frontend libraries.
+It has his owm markdown parser, made using regex to match the expression the user intend to parse.
+Check the original text entered for examples of what is possible to do.
 
 # Rules for lists
 > number of whitespaces before hyphen character "-"
