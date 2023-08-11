@@ -9,6 +9,8 @@ index.html => has the latest updated code and with the test suits and with all t
 index_original.html => originaly, the tests were not all passing, and a major change was needed in the code.
 index_original works identically as index, but does not passes all tests.
 
+code pen link: https://codepen.io/damasceno-dev/pen/xxQqjzg
+
 # Rules for lists
 > number of whitespaces before hyphen character "-"
 0 or 1 => level 1:    |-aweawe    or |  -aweae 
