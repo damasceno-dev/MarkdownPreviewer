@@ -20,16 +20,6 @@
     
     box-shadow: 10px 10px 15px -3px rgb(255, 255, 255);
   } */
-  code {
-    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
-    margin-bottom: 8px;
-    width: 100%;
-    font-weight: 700;
-    color:black;
-    background: white;
-    padding: 1.5px;
-
-  }
 </style>
 <body class="bg-black">
     <div id="root"></div>
@@ -39,7 +29,6 @@
     <script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js"></script>
     <!-- Babel Script -->
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
-    <script src="https://cdn.freecodecamp.org/testable-projects-fcc/v1/bundle.js"></script>
 
     <script type="text/babel">
         
@@ -53,8 +42,8 @@
 
       function MarkBox() {
 
-        // const initialText = 'This is an example of **multiline code**:\n```\n for (let i = 0; i < array.length; i++)     { \n   fx(i)\n   testing               space \n }\n```\nEnd of multline code '
-        const initialText = '# Welcome to my React Markdown Previewer!\n## This markdown was made from scratch using: \n### React with tailwind \nThis is a simple line \nThe above is possible because we are using the property __whitespace-pre-wrap__ from tailwind, which preservers whitespace and the word-wrap\n\nThis is some **bold** text \n And this is __italic__ text  \n And you can make __**bold and italic**__ text\n\n\nThis is inline code: `<div></div>`. See? Again on the same line: `function import`\nLook:`<div></div>` \n`somecode`here (no space) \n\n\nThis is an example of **multiline code**:\n```\n for (let i = 0; i < array.length; i++)     { \n   fx(i)\n   testing               space \n }\n```\nEnd of multline code \n\n\n - And of course\n  -There are lists\n    - With 2 levels of indentation \n  -just count the number\n- of white spaces \n    - before the hyphen character\n-                 Whitespaces after the hyphen character doesn\'t matter\n\n\nThere\'s also links! Links for [this](https://johntravolta1.github.io/portfolio-web-page/) awsome portfolio webpage in example, or for a great learning site you can go [here](https://freecodecamp.org).\n\n\n> "And we can have some amazing quotes as well" - Quoter Quotin \n\nAnd last but not least, we can have embedded images: ![Shut up and take my money](https://static1.pocketlintimages.com/wordpress/wp-content/uploads/140427-apps-news-the-best-stupidest-and-most-famous-internet-memes-around-image12-grwqeswg1j.jpg?q=50&fit=crop&w=750&dpr=1.5)\n ![Success kid](https://static1.pocketlintimages.com/wordpress/wp-content/uploads/140427-apps-news-the-best-stupidest-and-most-famous-internet-memes-around-image8-6bluhsfxts.jpg?q=50&fit=crop&w=750&dpr=1.5)\n';
+        const initialText = '# Welcome to my React Markdown Previewer!\n## This markdown was made from scratch using: \n### React with tailwind \nThis is a simple line \nThis is a full line example: Lorem ipsum dolor sit amet consectetur adipisicing elit. Recusandae minus eos pariatur reiciendis placeat, esse ipsum est facere.\n\nThe above is possible because we are using the property __whitespace-pre-wrap__ from tailwind, which preservers whitespace and the word-wrap\n\nThis is some **bold** text \n And this is __italic__ text  \n And you can make __**bold and italic**__ text\nThis is inline code: `<div></div>`. See? Again on the same line: `function import`\nLook:`<div></div>` \n`somecode`here (no space) \n\nThis is an example of **multiline code**:\n```\n for (let i = 0; i < array.length; i++)     { \n   console.log(i)\n   testing               space \n }\n```\nEnd of multline code \n\n - And of course\n  -There are lists\n    - With 2 levels of indentation \n  -just count the number\n- of white spaces \n    - before the hyphen character\n-                 Whitespaces after the hyphen character doesn\'t matter\n\nThere\'s also links! Links for [this](https://johntravolta1.github.io/portfolio-web-page/) awsome portfolio webpage in example, or for a great learning site you can go [here](https://freecodecamp.org).\n\n> "And we can have some amazing quotes as well" - Quoter Quotin \n\nAnd last but not least, we can have embedded images:\n ![Shut up and take my money](https://static1.pocketlintimages.com/wordpress/wp-content/uploads/140427-apps-news-the-best-stupidest-and-most-famous-internet-memes-around-image12-grwqeswg1j.jpg?q=50&fit=crop&w=750&dpr=1.5)\n ![Success kid](https://static1.pocketlintimages.com/wordpress/wp-content/uploads/140427-apps-news-the-best-stupidest-and-most-famous-internet-memes-around-image8-6bluhsfxts.jpg?q=50&fit=crop&w=750&dpr=1.5)\n';
+
         
         const scrollDownRef = React.useRef(null);
         const scrollUpRef = React.useRef(null);
@@ -162,9 +151,8 @@
       }
 
       function MarkDownParser({enteredText}) {
-        // const etArray = enteredText.split(/(\r?\n)/g); //=> with the split characther
         const etArray = enteredText.split(/\r?\n/);
-
+        console.log(etArray)
         const h1_Title = /^# /;
         const h2_Title = /^## /;
         const h3_Title = /^### /;
@@ -191,67 +179,13 @@
 
         const blockQuote = /^> /;
 
-        const emptyString = /^$/;
-
-        // const returnSpace = /\n/
-
-        
-
         let lineReturn;
         let RegexOfThisGroup;
 
-        // l("# h1 \n## h2"),n.isTrue(2===a.children.length&&"H1"===a.children[0].nodeName&&"h1"===a.children[0].innerHTML&&"H2"===a.children[1].nodeName&&"h2"===a.children[1].innerHTML,'"# h1 \n## h2" should be rendered as <h1>h1</h1>\n<h2>h2</h2>\n')
-
-        let paragraphArray = [];
-        let foundParagraph = false;
-        const simpleLinesSeparator = '%%%';
-        //Simple lines are those who does not match any regex. If there are simple lines adjacent, there should be and <br/> element in between them.
-        // this is only possible if they are a single element in the array.
-        // for the script to know where to put the <br/> between 2 simple lines, the workedArray bellow inserts a special characters between them.
-        // any special character would work, but they must be unique in the markdown
-        const workedArray = etArray.reduce((acc, line, index) => {
-            inLineCode.lastIndex =0; boldedText.lastIndex =0; italicText.lastIndex = 0;
-          if (!h1_Title.test(line) && !h2_Title.test(line) && !h3_Title.test(line) && 
-              !inLineCode.test(line) && !boldedText.test(line) && !italicText.test(line) && 
-              !multLineCode.test(line) && !list_1.test(line) && !list_2.test(line) && 
-              !list_3.test(line) && !altsForImages.test(line) && !webImages.test(line) && 
-              !webPageLinks.test(line) && !webPageLinksCharacters.test(line) && !textsForLinks.test(line) && 
-              !webLinks.test(line) && !blockQuote.test(line) 
-             ) {
-
-              if(!multLineCodeActive) {
-                foundParagraph = true 
-                paragraphArray.push(line)
-
-                if (index === etArray.length -1) {
-                  acc.push(paragraphArray.join(simpleLinesSeparator))
-                }
-              } else {
-                acc.push(line);
-              }
-             return acc;
-          } else {            
-            if (multLineCode.test(line)) {
-              multLineCodeActive = !multLineCodeActive;
-            }
-            if (foundParagraph && !multLineCodeActive) {
-              foundParagraph = false;
-              acc.push(paragraphArray.join(simpleLinesSeparator));
-              acc.push(line);
-              paragraphArray = [];
-              return acc;
-            } else {
-              foundParagraph = false;
-              paragraphArray = [];
-              acc.push(line);
-              return acc;
-            }
-          }
-        }, [])
 
         return (
-          workedArray.map((line, index) => {
-            inLineCode.lastIndex =0; boldedText.lastIndex =0; italicText.lastIndex = 0;
+          etArray.map((line, index) => {
+
             // #region Multilinecode
             if (multLineCode.test(line)) {
               multLineCodeActive = !multLineCodeActive
@@ -272,13 +206,13 @@
             if (h1_Title.test(line)) {
               lineReturn = line.replace(h1_Title, '')
               return (
-                <h1 key={index} className='text-6xl w-full h-16 font-bold border-b-2 border-indigo-500 mb-10 leading-[3.2rem]'>{lineReturn.trim()}</h1>
+                <h1 key={index} className='text-6xl w-full h-16 font-bold border-b-2 border-indigo-500 mb-10 leading-[3.2rem]'>{lineReturn}</h1>
               )
             } 
             else if (h2_Title.test(line)) {
               lineReturn = line.replace(h2_Title, '')
               return (
-                <h2 key={index} className='text-4xl w-full h-16 font-bold border-b-[1px] border-indigo-500 leading-[5rem]	mb-8'>{lineReturn.trim()}</h2>
+                <h2 key={index} className='text-4xl w-full h-16 font-bold border-b-[1px] border-indigo-500 leading-[5rem]	mb-8'>{lineReturn}</h2>
               )
             } 
             else if (h3_Title.test(line)) {
@@ -289,40 +223,18 @@
             } 
             // #endregion Title
 
-            // #region in-line code
-            if (inLineCode.test(line)) {    
-              RegexOfThisGroup = /`/g
-
-              let lineCodeInside = line.match(inLineCode)
-              let arrayWithCodes = lineCodeInside.map(x => x.replaceAll(RegexOfThisGroup, '')) //array without '`' grave accent.
-              let lineArray = line.split(inLineCode);
-                
-                return (
-                <div key={index}>
-                  {lineArray.map((element, indexInside) => {
-                    if (arrayWithCodes.includes(element)) {   
-                       return (
-                          <code key={indexInside}>{element}</code>
-                       )
-                    } else {
-                      return <div className='inline'>{element}</div>
-                    }
-
-                  })}
-                </div>
-              )
-            }
-
-            //#endregion
-
-
             // #region inLine, bolded and italic
-            if (boldedText.test(line) || italicText.test(line)) {
-              // RegexOfThisGroup =  /`|\*\*|__/g //regex for in line code, or bold, or italic. It's used to remove those special characters from the returned string.              
-              // OBS: THIS EXPRESSION DOES NOT REMOVE THE SPLIT CHARACTERS => /(`|\*\*|__)/g BECAUSE OF THE INNER PARENTHESIS
-              RegexOfThisGroup = /\*\*|__/g
-              boldedText.lastIndex =0; italicText.lastIndex = 0;
-              let arrayWithBolded = []; let arrayWithItalic = []; 
+            if (inLineCode.test(line) || boldedText.test(line) || italicText.test(line)) {
+              RegexOfThisGroup =  /`|\*\*|__/g //regex for in line code, or bold, or italic. It's used to remove those special characters from the returned string.              
+              // OBS: THIS EXPRESSION DOES NOT REMOVE THE SPLIT CHARACTERS => (/`|\*\*|__/g) BECAUSE OF THE PARENTHESIS
+
+              inLineCode.lastIndex =0; boldedText.lastIndex =0; italicText.lastIndex = 0;
+              let arrayWithCodes = []; let arrayWithBolded = []; let arrayWithItalic = []; 
+
+              if (inLineCode.test(line)) {
+                let lineCodeInside = line.match(inLineCode)
+                arrayWithCodes = lineCodeInside.map(x => x.replaceAll(RegexOfThisGroup, '')) //array without '`' grave accent.
+              }
 
               if (boldedText.test(line)) {
                 let boldedTextInside = line.match(boldedText)
@@ -336,30 +248,27 @@
 
               let classToAdd = 'inline text-2xl h-6';
               let lineArray = line.split(RegexOfThisGroup); //this is going to isolate the code. Comparing each element with arrayWithCodes, arrayWithBolded or arrayWithItalic will give me which one is to style
-              lineArray = lineArray.filter(x => x.trim() !== '' )
-
-
-              let innerHTMLtoReturn = '';
-              let wrapItalic = false; let wrapBold = false;
-              
-              lineArray.map((element, indexInside) => {
-                wrapItalic = false; wrapBold = false;
-                if (arrayWithItalic.includes(element)) {
-                  wrapItalic = true;
-
-                }                
-                if (arrayWithBolded.includes(element)) {
-                  wrapBold = true;
-                }
-
-                wrapItalic ? element =  '<i>' + element + '</i>' : null;
-                wrapBold ? element = '<strong>' + element + '</strong>' : null;
-
-                innerHTMLtoReturn += element
-              })
 
               return (
-                <p key={index} dangerouslySetInnerHTML={{__html: innerHTMLtoReturn}}></p>
+                <div key={index}>
+                  {lineArray.map((element, indexInside) => {
+                    if (arrayWithCodes.includes(element)) {
+                      classToAdd += ' font-mono mb-8 w-full font-bold text-black p-[1.5px] bg-white ';
+                    }
+                    if (arrayWithBolded.includes(element)) {
+                      classToAdd += ' font-extrabold mb-2';
+                    }
+                    if (arrayWithItalic.includes(element)) {
+                      classToAdd += ' italic mb-2';
+                    }
+                    if (!arrayWithCodes.includes(element) && !arrayWithBolded.includes(element) && !arrayWithItalic.includes(element)) {
+                      classToAdd = 'inline text-2xl h-6';
+                    }
+                    return (
+                      <div key={indexInside} className={classToAdd}>{element}</div>
+                    )
+                  })}
+                </div>
               )
             }
             // #endregion inLine, bolded and italic
@@ -368,7 +277,7 @@
             else if (list_1.test(line)) {
               lineReturn = line.replace(list_1, '')
               return (
-                <ul key={index} className='list-disc h-6 mb-1 pl-10'>
+                <ul key={index} className='list-disc text-2xl h-6 mb-2'>
                       <li>{lineReturn}</li>
                 </ul>
               )
@@ -376,7 +285,7 @@
             else if (list_2.test(line)) {
               lineReturn = line.replace(list_2,'')
               return (
-                <ul key={index}  style={{listStyleType: 'circle'}} className='ml-10 h-6 mb-1 pl-10'>
+                <ul key={index}  style={{listStyleType: 'circle'}} className='ml-10 text-2xl h-6 mb-2'>
                         <li>{lineReturn}</li> 
                 </ul>
               )
@@ -384,7 +293,7 @@
             else if (list_3.test(line)) {
               lineReturn = line.replace(list_3,'')
               return (
-                <ul key={index}  style={{listStyleType: 'square'}} className='ml-20 h-6 mb-1 pl-10'>
+                <ul key={index}  style={{listStyleType: 'square'}} className='ml-20 text-2xl h-6 mb-2'>
                         <li>{lineReturn}</li> 
                 </ul>
               )
@@ -394,6 +303,7 @@
 
             // #region images 
             else if(webPageImages.test(line)) {
+              console.log(line)
               RegexOfThisGroup = /!|\[|\]|\(|\)/g //regex for links characters. It's used to remove those special characters from the returned string.
               let images = line.match(webImages);
               let arrayWithImages = images.map(x=> x.replaceAll(RegexOfThisGroup, ''));
@@ -422,7 +332,7 @@
                     }
                     else {
                       return (
-                        <div key={indexInside} className='inlineh-6'>{element}</div>
+                        <div key={indexInside} className='inline text-2xl h-6'>{element}</div>
                       )
                     }
                   })}
@@ -447,7 +357,7 @@
                 arrayObject.push(element)
               }
 
-              let classToAdd = 'inline h-6';
+              let classToAdd = 'inline text-2xl h-6';
               let lineArray = line.split(webPageLinksCharacters).filter(item => !arrayWithLinks.includes(item))
               
               return (
@@ -455,12 +365,12 @@
                   {lineArray.map((element, indexInside) => {
                     if (arrayWithTexts.includes(element)) {
                       return (
-                        <a key={indexInside} target='_blank' className='inline h-6 underline' href={arrayObject.find(x => x.text === element).link}>{element}</a>
+                        <a key={indexInside} target='_blank' className='inline text-2xl h-6 underline' href={arrayObject.find(x => x.text === element).link}>{element}</a>
                       )
                     }
                     else {
                       return (
-                        <div key={indexInside} className='inline h-6'>{element}</div>
+                        <div key={indexInside} className='inline text-2xl h-6'>{element}</div>
                       )
                     }
                   })}
@@ -474,58 +384,14 @@
               lineReturn = line.replace(blockQuote, '')
               return (
                 <blockquote class="p-4 my-4 mx-20 border-l-4 border-gray-400 bg-gray-100 border-gray-500 bg-gray-700">
-                    <pre class="text-xl italic font-medium leading-relaxed text-gray-900 text-white">{lineReturn}</pre>
+                    <p class="text-xl italic font-medium leading-relaxed text-gray-900 text-white">{lineReturn}</p>
                 </blockquote>
               )
             }
             //#endregion quote
 
-            else if (emptyString.test(line)) {
-              return <React.Fragment>{line}</React.Fragment>
-            }
-            // else if (returnSpace.test(line)) {
-            //   return <br/>
-            // }
-
             else { 
-              if (line.includes('%%%')) {
-                RegexOfThisGroup = /%%%/g
-                
-                let arrayWithBreaks = line.split(RegexOfThisGroup);
-
-                return (
-                  <p>
-                    {
-                      arrayWithBreaks.map((line, index) => {
-                      return (
-                        <React.Fragment>
-                          {line}
-                          {index !== arrayWithBreaks.length -1 && <br/>} 
-                        </React.Fragment>
-                      )
-                          // dont return br for the last element
-                    })
-                    }
-                  </p>
-                )
-              } else {
-
-                return <p>{line}</p>
-              }
-              // paragraph.map((content,i) => {
-              //   if (i + 1 !== paragraph.length) {
-              //     return (
-              //       <p>{content} <br/></p>
-              //     )
-              //   } else {
-              //     return (
-              //       <p>{content}</p>
-              //     )
-              //   }
-              // })
-
-              // return <div key={index} className='text-2xl h-6 mb-2'>{line}</div>
-              // return <React.Fragment>{line}</React.Fragment>
+              return <div key={index} className='text-2xl h-6 mb-2'>{line}</div>
             }
 
           })
